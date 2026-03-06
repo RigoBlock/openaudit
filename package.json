@@ -1,0 +1,9 @@
+{
+  "name": "mega-audit",
+  "private": true,
+  "description": "Dependencies for smart contract auditing MCP tools",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "zod": "^4.3.6"
+  }
+}

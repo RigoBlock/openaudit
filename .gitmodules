@@ -1,0 +1,34 @@
+[submodule "deps/trailofbits-skills"]
+	path = deps/trailofbits-skills
+	url = https://github.com/trailofbits/skills
+[submodule "deps/pashov-skills"]
+	path = deps/pashov-skills
+	url = https://github.com/pashov/skills
+[submodule "deps/cyfrin-solskill"]
+	path = deps/cyfrin-solskill
+	url = https://github.com/Cyfrin/solskill
+[submodule "deps/kadenzipfel-scv-scan"]
+	path = deps/kadenzipfel-scv-scan
+	url = https://github.com/kadenzipfel/scv-scan
+[submodule "deps/forefy-context"]
+	path = deps/forefy-context
+	url = https://github.com/forefy/.context
+[submodule "deps/quillai-qs-skills"]
+	path = deps/quillai-qs-skills
+	url = https://github.com/quillai-network/qs_skills
+[submodule "deps/archethect-sc-auditor"]
+	path = deps/archethect-sc-auditor
+	url = https://github.com/Archethect/sc-auditor
+[submodule "deps/hackenproof-skills"]
+	path = deps/hackenproof-skills
+	url = https://github.com/hackenproof-public/skills
+[submodule "deps/auditmos-skills"]
+	path = deps/auditmos-skills
+	url = https://github.com/auditmos/skills
+[submodule "deps/frankcastle-safe-solana"]
+	path = deps/frankcastle-safe-solana
+	url = https://github.com/Frankcastleauditor/safe-solana-builder
+[submodule "deps/membrane-core"]
+	path = deps/membrane-core
+	url = https://github.com/The-Membrane/membrane-core
+	branch = new-age-cdp
