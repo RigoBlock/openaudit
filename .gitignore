@@ -29,6 +29,6 @@ Thumbs.db
 slither-results/
 
 # Forge
-out/
+out/*
 cache/
 

@@ -8,22 +8,40 @@ The skill has been refined to a such a level that any software developer audit d
 
 ## How it works
 
-1. Point to a smart contract in a blockchain explorer
-2. Analyses deployment information (proxy patterns, privileged addresses, multisig setups)
-3. Runs several audit skill pipelines against the project
-4. Every audit pipeline products its own report, stored in `output` folder
-5. A summart repoert with deduplication and cross-reference is created
+1. We set up software tools for smart contract auditing and poking the chain
+2. Point this skill to a smart contract address
+3. It analyses deployment information (proxy patterns, privileged addresses, multisig setups)
+4. Runs several audit skill pipelines against the project
+5. Every audit pipeline products its own report, stored in `out` folder
+6. Find existing audit reports and cross reference for the same contract
+7. A summart report with deduplication and cross-reference is written at the end
 
 The skills support Solidity, Vyper, Anchor (Rust) and CosmWasm (Rust) smart contracts.
 
 The skill is in [skills/openaudit/SKILL.md](./skills/openaudit/SKILL.md).
 
-## Supported agent auditing pipelines
+## Supported agent pipelines
+
+These are open source, community maintained, skill repositores which we are going to run against the smart contract we are going to audit:
+
+| Repo                                                                     | Stars |          Skills |  Lines | Languages                                                                            | Contributors                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Twitter                                         |
+| ------------------------------------------------------------------------ | ----: | --------------: | -----: | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [trailofbits/skills](./deps/trailofbits-skills)                          | 3,274 |              58 | 73,636 | Solidity, Cairo, Cosmos, Algorand, Substrate, Solana (Move), Go, Rust, Python, C/C++ | [dguido](https://github.com/dguido), [Ninja3047](https://github.com/Ninja3047), [GrosQuildu](https://github.com/GrosQuildu), [ahpaleus](https://github.com/ahpaleus), [dariushoule](https://github.com/dariushoule), [DarkaMaul](https://github.com/DarkaMaul), [hbrodin](https://github.com/hbrodin), [bsamuels453](https://github.com/bsamuels453), [mosajjal](https://github.com/mosajjal), [frabert](https://github.com/frabert), [sblackshear](https://github.com/sblackshear), [vanhauser-thc](https://github.com/vanhauser-thc) + 7 more | [@trailofbits](https://x.com/trailofbits)       |
+| [pashov/skills](./deps/pashov-skills)                                    |   156 |               1 |  1,461 | Solidity                                                                             | [pashov](https://github.com/pashov), [Daneided](https://github.com/Daneided)                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | [@pashov](https://x.com/pashov)                 |
+| [Cyfrin/solskill](./deps/cyfrin-solskill)                                |    96 |               1 |    350 | Solidity                                                                             | [PatrickAlphaC](https://github.com/PatrickAlphaC)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | [@PatrickAlphaC](https://x.com/PatrickAlphaC)   |
+| [kadenzipfel/scv-scan](./deps/kadenzipfel-scv-scan)                      |    77 |               1 |  2,784 | Solidity                                                                             | [kadenzipfel](https://github.com/kadenzipfel)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | [@0xkaden](https://x.com/0xkaden)               |
+| [forefy/.context](./deps/forefy-context)                                 |    70 |               3 | 15,371 | Solidity, Anchor (Solana), Vyper                                                     | [forefy](https://github.com/forefy)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [@forefy](https://x.com/forefy)                 |
+| [quillai-network/qs_skills](./deps/quillai-qs-skills)                    |    62 |              10 |  8,528 | Solidity                                                                             | [ChitranshVashney](https://github.com/ChitranshVashney), [michaeldim](https://github.com/michaeldim)                                                                                                                                                                                                                                                                                                                                                                                                                                            | [@QuillAudits_AI](https://x.com/QuillAudits_AI) |
+| [Archethect/sc-auditor](./deps/archethect-sc-auditor)                    |    47 | 1 + 4 MCP tools |  1,285 | Solidity                                                                             | [Archethect](https://github.com/Archethect)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [@archethect](https://x.com/archethect)         |
+| [hackenproof-public/skills](./deps/hackenproof-skills)                   |     7 |               1 |    300 | Solidity, general web/mobile                                                         | [dorsky](https://github.com/dorsky)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [@d0rsky](https://x.com/d0rsky)                 |
+| [auditmos/skills](./deps/auditmos-skills)                                |     0 |              14 | 12,981 | Solidity                                                                             | [tkowalczyk](https://github.com/tkowalczyk)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [@tomkowalczyk](https://x.com/tomkowalczyk)     |
+| [Frankcastleauditor/safe-solana-builder](./deps/frankcastle-safe-solana) |    47 |               1 |  1,607 | Rust (Solana Anchor + Native)                                                        | [Frankcastleauditor](https://github.com/Frankcastleauditor), [Arrowana](https://github.com/Arrowana)                                                                                                                                                                                                                                                                                                                                                                                                                                            | [@0xcastle_chain](https://x.com/0xcastle_chain) |
+| [The-Membrane/membrane-core](./deps/membrane-core)                       |    10 |               1 |  3,267 | CosmWasm (Rust)                                                                      | [triccs](https://github.com/triccs)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | —                                               |
 
 ## Prerequisites
 
-The skills require access to the tooling, like Solidity compiler, Python-based [Slither](https://github.com/crytic/slither) or Rust-based [Foundry](https://www.getfoundry.sh/). You can check if you have this by running `scripts/check-prerequisites.sh`. We also use [web3-ethereum-defi](https://web3-ethereum-defi.tradingstrategy.ai/) and [Web3.py](https://web3py.readthedocs.io/en/stable/)
-packages to run ad-hoc Python scripts to analyse raw blockchains data from JSON-RPC and similar.
+The skills require access to the tooling, like Solidity compiler, Python-based [Slither](https://github.com/crytic/slither) or Rust-based [Foundry](https://www.getfoundry.sh/). We also use [web3-ethereum-defi](https://web3-ethereum-defi.tradingstrategy.ai/) and [Web3.py](https://web3py.readthedocs.io/en/stable/)
+packages to read the chain data over RPCs.
 
 ### Clone
 
@@ -85,12 +103,31 @@ Use the skill by pointing it to a smart contract on a blockchain explorer:
 /openaudit https://etherscan.io/address/0x657d9ABA1DBb59e53f9F3eCAA878447dCfC96dCb
 ```
 
+![Agents working](docs/working.png)
+
+When it is finished you get the summary and reports:
+
+![alt text](docs/reports.png)
+
 ## Configuration
 
 The skill has been taught read multiple blockchains using Python and Web3.py.
 [See here how the blockchains RPCs are configured](https://web3-ethereum-defi.tradingstrategy.ai/api/provider/_autosummary_provider/eth_defi.provider.env?highlight=env#). E.g. `JSON_RPC_ARBITRUM` for Arbirum RPCs.
 
 Use [env.sh](/env.sh) to source the RPC API keys and such that the skills needs.
+
+You can use [get-block-number](./skills/get-block-number/SKILL.md]) skill to test RPCs:
+
+```
+/get-block-number arbitrum
+```
+
+Should give you:
+
+```
+Chain: Arbitrum
+Latest block number: 439,218,227
+```
 
 ## Version history
 
@@ -106,7 +143,7 @@ Use [env.sh](/env.sh) to source the RPC API keys and such that the skills needs.
 - [Follow on Twitter](https://twitter.com/TradingProtocol)
 - [Follow on Telegram](https://t.me/trading_protocol)
 - [Follow on LinkedIn](https://www.linkedin.com/company/trading-strategy/)
-- [Watch tutorials on YouTube](https://www.youtube.com/@tradingstrategyprotocol)
+- [Follow on YouTube](https://www.youtube.com/@tradingstrategyprotocol)
 
 # License
 
