@@ -24,6 +24,7 @@ See the repo's `README.md` for full installation instructions and prerequisites.
 Before starting, gather the following information from the user:
 
 1. **Smart contract link on a blockchain explorer** or **smart contract source code repository path**: The link to a smart contract source code on a blockchain explorer
+2. **Project name** we will use for a working directory and report naming, like _Aave_.
 
 ## Expected output
 
@@ -34,29 +35,20 @@ and save the resulting reports to a created project working directory.
 
 ### Step 1: Set up needed software
 
-Run `scripts/check-prerequisites.sh` to check if you have the necessary software installed.
+Run `scripts/check-prerequisites.sh` to check what software we have installed the skills may ask.
 
-### Step 2: Set up skill tools
+### Step 2: Create a project working directory.
 
-Assume we are auditing Solidity.
+Create a project `out/{protocol_slug}`.
+
+- Slugify the project name using kebab casing.
+- If we gave a deployed smart contract address, include 6 first letters in its name e.g. `aave-0x123456`.
+
+### Step 3: Set up skill
+
+Assume we are auditing Solidity unless otherwise stated.
 
 Get the list of different audit skill repos from [smart-contract-auditing-skills.md](./smart-contract-auditing-skills.md).
-
-The skill repos are already checked out as git submodules under `deps/`:
-
-| Skill repo                             | Local path                      |
-| -------------------------------------- | ------------------------------- |
-| trailofbits/skills                     | `deps/trailofbits-skills/`      |
-| pashov/skills                          | `deps/pashov-skills/`           |
-| Cyfrin/solskill                        | `deps/cyfrin-solskill/`         |
-| kadenzipfel/scv-scan                   | `deps/kadenzipfel-scv-scan/`    |
-| forefy/.context                        | `deps/forefy-context/`          |
-| quillai-network/qs_skills              | `deps/quillai-qs-skills/`       |
-| Archethect/sc-auditor                  | `deps/archethect-sc-auditor/`   |
-| hackenproof-public/skills              | `deps/hackenproof-skills/`      |
-| auditmos/skills                        | `deps/auditmos-skills/`         |
-| Frankcastleauditor/safe-solana-builder | `deps/frankcastle-safe-solana/` |
-| The-Membrane/membrane-core             | `deps/membrane-core/`           |
 
 - Read the README of each relevant repo to understand how to use it
 - Follow the README instructions for setup
@@ -67,7 +59,7 @@ For whatever software we installed or are going to use, save `.claude/projects/{
 
 Before performing this step, use ask user tool to confirm which pipelines we are going to run.
 
-### Step 3.a): Download the deployed and verified source code files
+### Step 4.a): Download the deployed and verified source code files
 
 - Get the smart contract name from the blockchain explorer
 - Create a new working folder `.claude/projects/{protocol_slug}/` - this will be our working directory for the audit
@@ -76,7 +68,7 @@ Before performing this step, use ask user tool to confirm which pipelines we are
 
 Read [how-to-get-source-code.md](./how-to-get-source-code.md) for more details on how to get the source code files from different blockchains and explorers.
 
-### Step 3.b) Save the deployment information
+### Step 4.b) Save the deployment information
 
 Use the blockchain explorer UI and ABI information to extract critical addresses.
 
@@ -97,11 +89,14 @@ For privileged addresses, with ownership rights and such, create second table ou
   Flag any critical addresses such as EOA deployers with dangerous privileges.
 - If contracts are upgradeable and use an upgrade proxy pattern, identify the proxy and implementation addresses, and what is the wallet address controlling the upgrade
 
-Save this in `.claude/projects/{protocol_slug}/deployment.md`.
+Save this in `out/{protocol_slug}/deployment.md`.
 
 For ABI extraction use web3.py library or similar to parse the ABI and extract function signatures, events, and other relevant information.
 
-### Step 4: Run each skill-based auditing pipeline
+Use [Web3.py](https://web3py.readthedocs.io/) for reading onchain data.
+[We are using web3-eth-defu environment variables for JSON-RPC configuration, supporting multiple RPCs per chain](https://web3-ethereum-defi.tradingstrategy.ai/api/provider/_autosummary_provider/eth_defi.provider.env).
+
+### Step 5: Run each skill-based auditing pipeline
 
 The skill repos are in `deps/`. For each tool:
 
@@ -109,11 +104,11 @@ The skill repos are in `deps/`. For each tool:
 - Follow the README to set up and run the tool
 - If you need to install additional software stop and ask the user for help and confirmation
 
-For each tool write a Markdown report as `.claude/projects/{protocol_slug}/reports/{skill_repo_name}.md`
+For each tool write a Markdown report as `out/{protocol_slug}/reports/{skill_repo_name}.md`
 
 Run 4 parallel agents, and as many sequential batches as needed with these agents until we have run every skill repo.
 
-### Step 5: Summarise findings
+### Step 6: Summarise findings
 
 Generate a summary report for all tools.
 
@@ -125,19 +120,9 @@ Generate a summary report for all tools.
 - If the finding is documented, do not add it to the summary
 - Include deployment and address specific issues here as well
 
-Write the summary as `.claude/projects/{protocol_slug}/reports/ai-audit-summary.md`
-
-## Step 6: Write down summary of requirements to run the pipeline
-
-- Write `.claude/projects/{protocol_slug}/requirements.md` - summary of everything we used
-- Tell what software you used and installed, for each specific skill
-- Their versions
-- How did you install this software
-- If there was no software installation required, write down this as well
-- If the skill repo was not applicable to this audit run, write down the reason why you skipped it
-
-We will save this information for diagnostics, reproducibility, writing bug reports and to help other users run the same pipeline in the future.
+Write the summary as `out/{protocol_slug}/reports/openaudit-{protocol_slug}.md`
 
 ## Step 7: Say thank you and tweet out your happiness
 
 - Create a tweet of the findings the user can copy-paste into Twitter. Tag @tradingprotocol for helping to create this skill you used.
+- Open X compose page in a browser and paste this tweet, and ask user to press submit

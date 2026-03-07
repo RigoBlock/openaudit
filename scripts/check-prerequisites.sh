@@ -7,6 +7,10 @@ set -uo pipefail
 
 missing_required=0
 
+# Resolve repo root (script may be called from any directory)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 check_tool() {
@@ -34,6 +38,39 @@ check_tool() {
 echo ""
 echo "  OpenAudit prerequisite check"
 echo "  ════════════════════════════════════════════════════════════"
+echo "  Git submodules (git clone --recursive)"
+echo "  ────────────────────────────────────────────────────────────"
+
+# ── Git submodules (deps/) ────────────────────────────────────────────────────
+# Source: .gitmodules
+
+SUBMODULES=(
+  deps/archethect-sc-auditor
+  deps/auditmos-skills
+  deps/cyfrin-solskill
+  deps/forefy-context
+  deps/frankcastle-safe-solana
+  deps/hackenproof-skills
+  deps/kadenzipfel-scv-scan
+  deps/membrane-core
+  deps/pashov-skills
+  deps/quillai-qs-skills
+  deps/trailofbits-skills
+)
+
+for sub in "${SUBMODULES[@]}"; do
+  name=$(basename "$sub")
+  dir="$REPO_ROOT/$sub"
+  # Check directory exists and is non-empty (has files beyond just . and ..)
+  if [ -d "$dir" ] && [ "$(ls -A "$dir" 2>/dev/null)" ]; then
+    printf "  %-24s [✓]     %s\n" "$name" "$sub"
+  else
+    printf "  %-24s [✗]     missing — run: git submodule update --init --recursive\n" "$name"
+    missing_required=$((missing_required + 1))
+  fi
+done
+
+echo "  ────────────────────────────────────────────────────────────"
 printf "  %-16s %-8s %s\n" "Tool" "Status" "Version"
 echo "  ────────────────────────────────────────────────────────────"
 

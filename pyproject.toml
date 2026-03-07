@@ -4,6 +4,7 @@ dependencies = [
   "solc-select", # Solidity compiler version manager
   "semgrep", # Pattern-based static analysis (Trail of Bits plugins)
   "web3", # On-chain queries during deployment analysis
+  "web3-ethereum-defi", # Multi-RPC support and misc DeFi protocol interactions
 ]
 description = "Smart contract OpenAudit pipeline for Claude Code/OpenAI Codex"
 name = "openaudit"
