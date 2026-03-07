@@ -6,6 +6,8 @@ OpenAudit is a Claude Code/OpenAI Codex metaskill that runs smart contract sourc
 
 The skill has been refined to a such a level that any software developer audit do a basic smart audit. You can point the skill to any deployed smart contract on any chain and get a basic audit report of its security qualities.
 
+![alt text](docs/splash.jpg)
+
 <!-- TOC -->
 
 ## Table of Contents
