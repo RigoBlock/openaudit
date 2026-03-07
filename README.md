@@ -105,7 +105,11 @@ Get a report everything is correctly installed:
 scripts/check-prerequisites.sh
 ```
 
-Then edit `env.sh` include necessary blockchain RPC endpoints, Etherscan API key and such.
+Then edit [env.sh](./env.sh.example) include necessary blockchain RPC API keys, Etherscan API keys and such.
+
+```shell
+cp env.sh.example env.sh
+```
 
 ### Linux
 
@@ -144,7 +148,7 @@ See the [YieldNest OpenAudit report example](./docs/examples/openaudit-yieldnest
 The skill has been taught read multiple blockchains using Python and Web3.py.
 [See here how the blockchains RPCs are configured](https://web3-ethereum-defi.tradingstrategy.ai/api/provider/_autosummary_provider/eth_defi.provider.env?highlight=env#). E.g. `JSON_RPC_ARBITRUM` for Arbirum RPCs.
 
-Use [env.sh](/env.sh) to source the RPC API keys and such that the skills needs.
+Use [env.sh](./env.sh.example) to source the RPC API keys and such that the skills needs.
 
 You can use [get-block-number](./skills/get-block-number/SKILL.md]) skill to test RPCs:
 
