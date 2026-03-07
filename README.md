@@ -7,6 +7,7 @@ OpenAudit is a Claude Code/OpenAI Codex metaskill that runs smart contract sourc
 The skill has been refined to a such a level that any software developer audit do a basic smart audit. You can point the skill to any deployed smart contract on any chain and get a basic audit report of its security qualities.
 
 <!-- TOC -->
+
 ## Table of Contents
 
 - [How it works](#how-it-works)
@@ -134,7 +135,7 @@ When it is finished you get the summary and reports in writes them in [out](./ou
 
 ## Examples
 
-See the [YieldNest OpenAudit report example](./docs/examples/openaudit-yieldnest-0x657d9a.md).
+See the [YieldNest OpenAudit report example](./docs/examples/openaudit-yieldnest-0x657d9a.md) and its [deployment findings](./docs/examples/addresses-yieldnest-0x657d9a.md) for weaknesses in controls.
 
 ## Configuration
 
