@@ -162,7 +162,6 @@ Latest block number: 439,218,227
 ## Version history
 
 - [Read changelog](https://github.com/tradingstrategy-ai/web3-ethereum-defi/blob/master/CHANGELOG.md).
-- [See releases](https://pypi.org/project/web3-ethereum-defi/#history).
 
 ## Support
 
