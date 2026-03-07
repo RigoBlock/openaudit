@@ -91,9 +91,9 @@ echo "  Python packages (uv sync)"
 echo "  ────────────────────────────────────────────────────────────"
 
 check_tool "slither"     "uv run slither --version"        required
-check_tool "solc-select" "uv run solc-select --version"    required
-check_tool "solc"        "solc --version"                  required
-check_tool "semgrep"     "semgrep --version"               required
+check_tool "solc-select" "uv run solc-select versions"     required
+check_tool "solc"        "uv run solc --version"           required
+check_tool "semgrep"     "uv run semgrep --version"        required
 
 # ── Optional tools ───────────────────────────────────────────────────────────
 # Source: skills/openaudit/install.md, deps/trailofbits-skills/README.md

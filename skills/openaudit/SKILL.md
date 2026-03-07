@@ -108,6 +108,11 @@ For each tool write a Markdown report as `out/{protocol_slug}/reports/{skill_rep
 
 Run 4 parallel agents, and as many sequential batches as needed with these agents until we have run every skill repo.
 
+If the skill needs to run software, the following commands can be used:
+
+- `uv run slither` - For Slither
+- `aderyn` - For Aderyn
+
 ### Step 6: Summarise findings
 
 Generate a summary report for all tools.
