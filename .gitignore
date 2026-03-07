@@ -32,3 +32,5 @@ slither-results/
 out/*
 cache/
 
+# Automatically gnenerated when running Cyfrin pipeline, ignore
+report.md

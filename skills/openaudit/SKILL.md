@@ -96,7 +96,7 @@ For privileged addresses, with ownership rights and such, create second table ou
   Flag any critical addresses such as EOA deployers with dangerous privileges.
 - If contracts are upgradeable and use an upgrade proxy pattern, identify the proxy and implementation addresses, and what is the wallet address controlling the upgrade
 
-Save this in `out/{protocol_slug}/reports/deployment-{protocol_slug}.md`
+Save this in `out/{protocol_slug}/reports/addresses-{protocol_slug}.md`
 
 For ABI extraction use web3.py library or similar to parse the ABI and extract function signatures, events, and other relevant information.
 
@@ -120,11 +120,11 @@ If the skill needs to run software, the following commands can be used:
 - `uv run slither` - For Slither
 - `aderyn` - For Aderyn
 
-### Step 6: Cross-reference existing audit reports
+### Step 6: Search for existing audit reports
 
-- Web search and Github search for the existing audit reports for the same project and smart contract]
-- You can use the contract name as Github search key e.g. `contract EulerEarn` or `EulerEarn` with a file type PDF (using Euler contract as an example)
-- Save the reports, full files and web pages, in `out/{protocol_slug}/exisitng-audit-reports/`
+- Read [how-to-find-existing-audit-reports.md](./how-to-find-existing-audit-reports.md) for tips on how to find existing audit reports for the same project and smart contract.
+- Save the reports, full files and web pages, in `out/{protocol_slug}/prior-audits/`
+- Run parallel agents to search and read through
 
 ### Step 7: Summarise findings
 
@@ -134,7 +134,7 @@ Creete a section and a table called _Issues found_ for both deployment issues an
 
 - Deduplicate findings across tools
 - Write a table output with columns like skill repo used, severity, short name, description, source file, relevant addresses, how team addresses the issue - add more columns if needed
-- Sort order deployment issues first, then critical, high, medium
+- Sort order: deployment issues first, then critical, high, medium
 - Include deployment and address specific issues in the table as the most important ones
 - If we have existing audit reports and the issues were already addressed, add a column to "author reply" with a reference to the existing report where the issue was discussed and addressed.
 - If the finding is INFO or LOW level, ignore them - let's not make the output too noisy
@@ -146,6 +146,13 @@ Creete a section and a table called _Cross reference_
 - As rows, have the unique findings
 - In a cell, mark if a pipeline or a report discuss this findings, and mark it by severy with one letter e.g. `H` for high and `L` for low
 
+Create a section and a table caleld _Existing audit reports_ with columns
+
+- Name
+- Date
+- Auditor
+- Link
+
 For skipped auditing pipelines, create another output table _Skipped pipelines_ with columns
 
 - Pipeline name
@@ -153,7 +160,7 @@ For skipped auditing pipelines, create another output table _Skipped pipelines_ 
 
 Write the summary as `out/{protocol_slug}/reports/openaudit-{protocol_slug}.md`
 
-## Step 7: Say thank you
+## Step 8: Say thank you
 
 Ask the user to tweet out happiness of finding and using this tool.
 
