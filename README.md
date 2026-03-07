@@ -1,5 +1,7 @@
 # OpenAudit
 
+[![CI](https://github.com/tradingstrategy-ai/openaudit/actions/workflows/ci.yml/badge.svg)](https://github.com/tradingstrategy-ai/openaudit/actions/workflows/ci.yml)
+
 OpenAudit is a Claude Code/OpenAI Codex metaskill that runs smart contract source code through multiple agent-based auditing skill pipelines in parallel. By combining 100+ skills across 10+ community audit skill repositories, OpenAudit provides comprehensive and free smart contract security analysis using different methodologies, vulnerability databases, and static analysis tools.
 
 The skill has been refined to a such a level that any software developer audit do a basic smart audit. You can point the skill to any deployed smart contract on any chain and get a basic audit report of its security qualities.
@@ -107,7 +109,11 @@ Use the skill by pointing it to a smart contract on a blockchain explorer:
 
 When it is finished you get the summary and reports:
 
-![alt text](docs/reports.png)
+![alt text](docs/summary-findings.png)
+
+## Examples
+
+See the [YieldNest OpenAudit report example](./docs/examples/openaudit-yieldnest-0x657d9a.md).
 
 ## Configuration
 
