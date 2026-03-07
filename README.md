@@ -111,6 +111,8 @@ Then edit [env.sh](./env.sh.example) include necessary blockchain RPC API keys, 
 cp env.sh.example env.sh
 ```
 
+The skill pipelines won't work without RPC API keys for the chains we are going to read, as we are auditing deployed contracts and their variable values. For reading the source code, we preper open [Sourcify](https://sourcify.dev/) over proprietary paid Etherscan, but due to history of proprietary tooling the source code may require Etherscan API key.
+
 ### Linux
 
 ```
