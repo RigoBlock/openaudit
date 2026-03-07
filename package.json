@@ -1,5 +1,5 @@
 {
-  "name": "mega-audit",
+  "name": "openaudit",
   "private": true,
   "description": "Dependencies for smart contract auditing MCP tools",
   "dependencies": {

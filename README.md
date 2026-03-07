@@ -1,125 +1,100 @@
-# Mega Audit
+# OpenAudit
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill that runs smart contract source code through multiple agent-based auditing pipelines in parallel. By combining ~93 skills across 11 community audit skill repositories, mega-audit provides comprehensive security analysis using different methodologies, vulnerability databases, and static analysis tools.
+OpenAudit is a Claude Code/OpenAI Codex skill that runs smart contract source code through multiple agent-based auditing pipelines in parallel. By combining 100+ skills across 10+ community audit skill repositories, OpenAudit provides comprehensive and free smart contract security analysis using different methodologies, vulnerability databases, and static analysis tools.
+
+The skill has been refined to a such a level that anyone with basic software development skills can audit any smart contract in the world.
 
 [Read the announcement post](https://x.com/moo9000/status/2029511848525971928).
 
 ## How it works
 
-1. Downloads verified smart contract source code from a blockchain explorer
+1. Point to a smart contract in a blockchain explorer
 2. Analyses deployment information (proxy patterns, privileged addresses, multisig setups)
-3. Runs 4 parallel Claude Code agents, each executing different audit skill repos
-4. Deduplicates and summarises findings into a severity-ranked report
+3. Runs several audit skill pipelines against the project
+4. Every audit pipeline products its own report, stored in `output` folder
+5. A summart repoert with deduplication and cross-reference is created
+
+The skills support Solidity, Vyper, Anchor (Rust) and CosmWasm (Rust) smart contracts.
 
 ## Prerequisites
 
+The skills require access to the tooling, like Solidity compiler, Python-based [Slither](https://github.com/crytic/slither) or Rust-based [Foundry](https://www.getfoundry.sh/). You can check if you have this by running `scripts/check-prerequisites.sh`. We also use [web3-ethereum-defi](https://web3-ethereum-defi.tradingstrategy.ai/) and [Web3.py](https://web3py.readthedocs.io/en/stable/)
+packages to run ad-hoc Python scripts to analyse raw blockchains data from JSON-RPC and similar.
+
 ### macOS (Homebrew)
 
+Clone the repository recursively to get the skills:
+
+```
+git clone --recursive --depth 1 --branch stable https://github.com/tradingstrategy-ai
+```
+
+Example installation of dependencies of various skills:
+
 ```bash
+
 # Python 3.11+
-brew install python@3.11
+# Node 22+
+brew install python uv brew codeql node rustup aderyn semgrep
 
-# uv (Python package manager)
-brew install uv
-
-# Node.js 22+ (for sc-auditor MCP server)
-brew install node@22
+# Rust toolchain (optional — needed for Aderyn static analyser)
+rustup-init
 
 # Foundry (forge — downloads verified contract source code)
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 
-# Rust toolchain (optional — needed for Aderyn static analyser)
-brew install rustup
-rustup-init
+# Install Slither using Python uv packaging tool
+uv sync
+```
+
+Check everything is installed:
+
+```shell
+scripts/check-prerequisites.sh
 ```
 
 ### Linux
 
-TODO
-
-## Installation
-
-```bash
-# Clone with all skill submodules
-git clone --recursive https://github.com/user/mega-audit.git
-cd mega-audit
-
-# Install Python dependencies (slither, solc-select, semgrep, web3)
-uv sync
-
-# Install Node dependencies (MCP SDK, zod)
-npm install
-
-# Build the sc-auditor MCP server
-cd deps/archethect-sc-auditor && npm install && npm run build && cd ../..
-
-# Install the Solidity compiler
-uv run solc-select install 0.8.28
-uv run solc-select use 0.8.28
-
-# Optional: install Aderyn (Rust-based static analyser)
-cargo install aderyn
 ```
+TODO
+```
+
+### Winwdows
+
+Unsupported.
 
 ## Usage
 
-The mega-audit skill is located at `.claude/skills/mega-audit/SKILL.md`. When this repo is your working directory, Claude Code can invoke it via `/mega-audit`.
+Open this repositorty in Claude Code/Codex/Visual Studio Code.
 
-You need to provide a link to a verified smart contract on a blockchain explorer (Etherscan, Basescan, Arbiscan, etc.).
-
-## Repo structure
+Use the skill:
 
 ```
-.claude/skills/mega-audit/   — The skill files (orchestration, install guide, skill catalogue)
-contracts/                    — Sample ERC-20 contract for CI testing
-deps/                         — Git submodules of all 11 audit skill repos
-pyproject.toml                — Python dependencies (uv sync)
-package.json                  — Node dependencies (npm install)
+/openaudit
 ```
 
-## Included skill repos
+The skill has been taught read multiple blockchains using Python Web3.
+[See here how the blockchains RPCs are configured](https://web3-ethereum-defi.tradingstrategy.ai/api/provider/_autosummary_provider/eth_defi.provider.env?highlight=env#). E.g. `JSON_RPC_ARBITRUM` for Arbirum RPCs.
 
-| Repo | Stars | Skills | Description |
-|------|------:|-------:|-------------|
-| [trailofbits/skills](https://github.com/trailofbits/skills) | 3,274 | 58 | Comprehensive security research skills (Solidity, Cairo, Cosmos, Go, Rust, Python, C/C++) |
-| [pashov/skills](https://github.com/pashov/skills) | 156 | 1 | Parallelised 4-agent Solidity audit pipeline |
-| [Cyfrin/solskill](https://github.com/Cyfrin/solskill) | 96 | 1 | Production-grade Solidity development standards |
-| [kadenzipfel/scv-scan](https://github.com/kadenzipfel/scv-scan) | 77 | 1 | Pure-Markdown vulnerability scanner (36 vulnerability types) |
-| [forefy/.context](https://github.com/forefy/.context) | 70 | 3 | Multi-expert framework for Solidity, Anchor, and Vyper |
-| [quillai-network/qs_skills](https://github.com/quillai-network/qs_skills) | 62 | 10 | QuillShield methodology covering OWASP Smart Contract Top 10 |
-| [Archethect/sc-auditor](https://github.com/Archethect/sc-auditor) | 47 | 1+4 | MCP server with Slither, Aderyn, and Solodit integration |
-| [Frankcastleauditor/safe-solana-builder](https://github.com/Frankcastleauditor/safe-solana-builder) | 47 | 1 | Security-first Solana program writing (Anchor + Native Rust) |
-| [The-Membrane/membrane-core](https://github.com/The-Membrane/membrane-core) | 10 | 1 | CosmWasm audit patterns from 61 Oak Security reports |
-| [hackenproof-public/skills](https://github.com/hackenproof-public/skills) | 7 | 1 | Bug bounty triage workflow |
-| [auditmos/skills](https://github.com/auditmos/skills) | 0 | 14 | 14 DeFi vulnerability-specific skills |
+## Version history
 
-**Total: ~93 skills across ~121,000 lines of audit knowledge.**
+- [Read changelog](https://github.com/tradingstrategy-ai/web3-ethereum-defi/blob/master/CHANGELOG.md).
+- [See releases](https://pypi.org/project/web3-ethereum-defi/#history).
 
-## Installed software
+## Support
 
-### Python (via `uv sync`)
+- [Join Discord for any questions](https://tradingstrategy.ai/community).
 
-| Package | Purpose |
-|---------|---------|
-| slither-analyzer | Solidity static analysis |
-| solc-select | Solidity compiler version manager |
-| semgrep | Pattern-based static analysis (Trail of Bits plugins) |
-| web3 | On-chain queries during deployment analysis |
+## Social media
 
-### Node (via `npm install`)
+- [Follow on Twitter](https://twitter.com/TradingProtocol)
+- [Follow on Telegram](https://t.me/trading_protocol)
+- [Follow on LinkedIn](https://www.linkedin.com/company/trading-strategy/)
+- [Watch tutorials on YouTube](https://www.youtube.com/@tradingstrategyprotocol)
 
-| Package | Purpose |
-|---------|---------|
-| @modelcontextprotocol/sdk | MCP server framework (for sc-auditor) |
-| zod | Schema validation (for sc-auditor) |
+# License
 
-### System tools (manual install)
+MIT.
 
-| Tool | Purpose | Install |
-|------|---------|---------|
-| Foundry (forge) | Download verified contract source code | `foundryup` |
-| Node.js 22+ | Runtime for sc-auditor MCP server | `brew install node@22` |
-| Python 3.11+ | Runtime for Slither and other tools | `brew install python@3.11` |
-| Rust toolchain | Optional — needed for Aderyn | `rustup-init` |
-| Aderyn | Optional — Rust-based Solidity static analyser | `cargo install aderyn` |
+[Created by Trading Strategy](https://tradingstrategy.ai).

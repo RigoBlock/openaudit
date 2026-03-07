@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 /**
  * @title SimpleToken
- * @dev A minimal ERC-20 token for testing the mega-audit toolchain.
+ * @dev A minimal ERC-20 token for testing the OpenAudit toolchain.
  */
 contract SimpleToken {
     string public name;

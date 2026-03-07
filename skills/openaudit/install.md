@@ -1,11 +1,11 @@
 # Installing smart contract auditing skill dependencies
 
 This guide covers how to install all required tools and dependencies for each auditing skill repo
-used by the mega-audit pipeline.
+used by the OpenAudit pipeline.
 
 ## Quick install
 
-The mega-audit repo bundles all dependencies via `pyproject.toml` (Python) and `package.json` (Node):
+The OpenAudit repo bundles all dependencies via `pyproject.toml` (Python) and `package.json` (Node):
 
 ```bash
 # Install Python tools (Slither, solc-select, Semgrep, web3)
@@ -170,7 +170,7 @@ Add to your `.mcp.json` or Claude Code settings:
     "sc-auditor": {
       "type": "stdio",
       "command": "node",
-      "args": ["<path-to-mega-audit>/deps/archethect-sc-auditor/dist/mcp/main.js"]
+      "args": ["<path-to-openaudit>/deps/archethect-sc-auditor/dist/mcp/main.js"]
     }
   }
 }
@@ -195,7 +195,7 @@ Most Trail of Bits skills are pure Markdown. Some specialised plugins require ad
 
 ## Running without any tool installation
 
-If you cannot install Slither, Aderyn, or the MCP server, the mega-audit pipeline still works.
+If you cannot install Slither, Aderyn, or the MCP server, the OpenAudit pipeline still works.
 All 11 skill repos provide Markdown-based audit methodologies that Claude Code can follow
 directly. You lose:
 

@@ -1,17 +1,17 @@
 ---
-name: mega-audit
+name: openaudit
 description: Run a smart contract source code through several agent skill-based auditing pipelines
 ---
 
-# Mega Audit
+# OpenAudit
 
 Run a smart contract source code through several agent skill-based auditing pipelines. By using multiple tools and techniques, we can get a more comprehensive understanding of the security and quality of the smart contract.
 
 ## Repo structure
 
-This skill lives in the `mega-audit` repository. Key paths:
+This skill lives in the `openaudit` repository. Key paths:
 
-- **Skill files**: `.claude/skills/mega-audit/` (this directory)
+- **Skill files**: `skills/openaudit/` (this directory)
 - **Audit skill repos**: `deps/` (11 git submodules — already checked out)
 - **Python deps**: `pyproject.toml` → install with `uv sync`
 - **Node deps**: `package.json` → install with `npm install`
@@ -23,7 +23,7 @@ See the repo's `README.md` for full installation instructions and prerequisites.
 
 Before starting, gather the following information from the user:
 
-1. **Smart contract link on a blockchain explorer**: The link to a smart contract source code on a blockchain explorer
+1. **Smart contract link on a blockchain explorer** or **smart contract source code repository path**: The link to a smart contract source code on a blockchain explorer
 
 ## Expected output
 
@@ -34,28 +34,7 @@ and save the resulting reports to a created project working directory.
 
 ### Step 1: Set up needed software
 
-All required software is documented in the repo's `README.md`. The key tools are:
-
-- **Python tools** (installed via `uv sync`): Slither, solc-select, Semgrep, web3.py
-- **Node tools** (installed via `npm install`): MCP SDK for sc-auditor
-- **System tools**: Foundry (forge), Node.js 22+, Python 3.11+
-- **Optional**: Aderyn (Rust-based static analyser, `cargo install aderyn`)
-
-Check if each tool is available:
-
-```bash
-uv run slither --version
-forge --version
-node --version
-uv run solc-select versions
-```
-
-Read [install.md](./install.md) for detailed installation instructions.
-
-For each application, check if it is available and use Ask User Tool to confirm if the user wants to install it.
-Also suggest installing optional tools.
-
-Do not proceed to next step until you have confirmation from the user that the needed software is installed and ready to use.
+Run `scripts/check-prerequisites.sh` to check if you have the necessary software installed.
 
 ### Step 2: Set up skill tools
 
@@ -65,19 +44,19 @@ Get the list of different audit skill repos from [smart-contract-auditing-skills
 
 The skill repos are already checked out as git submodules under `deps/`:
 
-| Skill repo | Local path |
-|------------|-----------|
-| trailofbits/skills | `deps/trailofbits-skills/` |
-| pashov/skills | `deps/pashov-skills/` |
-| Cyfrin/solskill | `deps/cyfrin-solskill/` |
-| kadenzipfel/scv-scan | `deps/kadenzipfel-scv-scan/` |
-| forefy/.context | `deps/forefy-context/` |
-| quillai-network/qs_skills | `deps/quillai-qs-skills/` |
-| Archethect/sc-auditor | `deps/archethect-sc-auditor/` |
-| hackenproof-public/skills | `deps/hackenproof-skills/` |
-| auditmos/skills | `deps/auditmos-skills/` |
+| Skill repo                             | Local path                      |
+| -------------------------------------- | ------------------------------- |
+| trailofbits/skills                     | `deps/trailofbits-skills/`      |
+| pashov/skills                          | `deps/pashov-skills/`           |
+| Cyfrin/solskill                        | `deps/cyfrin-solskill/`         |
+| kadenzipfel/scv-scan                   | `deps/kadenzipfel-scv-scan/`    |
+| forefy/.context                        | `deps/forefy-context/`          |
+| quillai-network/qs_skills              | `deps/quillai-qs-skills/`       |
+| Archethect/sc-auditor                  | `deps/archethect-sc-auditor/`   |
+| hackenproof-public/skills              | `deps/hackenproof-skills/`      |
+| auditmos/skills                        | `deps/auditmos-skills/`         |
 | Frankcastleauditor/safe-solana-builder | `deps/frankcastle-safe-solana/` |
-| The-Membrane/membrane-core | `deps/membrane-core/` |
+| The-Membrane/membrane-core             | `deps/membrane-core/`           |
 
 - Read the README of each relevant repo to understand how to use it
 - Follow the README instructions for setup

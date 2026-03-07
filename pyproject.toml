@@ -1,15 +1,15 @@
 [project]
-name = "mega-audit"
-version = "0.1.0"
-description = "Smart contract mega-audit pipeline for Claude Code"
-requires-python = ">=3.11"
 dependencies = [
-    "slither-analyzer",   # Solidity static analysis
-    "solc-select",        # Solidity compiler version manager
-    "semgrep",            # Pattern-based static analysis (Trail of Bits plugins)
-    "web3",               # On-chain queries during deployment analysis
+  "slither-analyzer", # Solidity static analysis
+  "solc-select", # Solidity compiler version manager
+  "semgrep", # Pattern-based static analysis (Trail of Bits plugins)
+  "web3", # On-chain queries during deployment analysis
 ]
+description = "Smart contract OpenAudit pipeline for Claude Code/OpenAI Codex"
+name = "openaudit"
+requires-python = ">=3.11"
+version = "0.1.0"
 
 [build-system]
-requires = ["hatchling"]
 build-backend = "hatchling.build"
+requires = ["hatchling"]

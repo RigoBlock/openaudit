@@ -51,34 +51,11 @@ jobs:
           uv run solc-select install 0.8.28
           uv run solc-select use 0.8.28
 
-      - name: Validate tools are available
-        run: |
-          echo "=== Python tools ==="
-          uv run slither --version
-          uv run solc-select versions
-          echo "=== Foundry ==="
-          forge --version
-          echo "=== Node ==="
-          node --version
-          npm --version
+      - name: Check prerequisites
+        run: bash scripts/check-prerequisites.sh
 
       - name: Run Slither against sample ERC-20
         run: |
           cd contracts
           uv run slither ERC20.sol --config-file foundry.toml || true
           echo "Slither analysis completed"
-
-      - name: Validate skill files exist
-        run: |
-          test -f .claude/skills/mega-audit/SKILL.md
-          test -f .claude/skills/mega-audit/how-to-get-source-code.md
-          test -f .claude/skills/mega-audit/install.md
-          test -f .claude/skills/mega-audit/smart-contract-auditing-skills.md
-          echo "All 4 skill files present"
-
-      - name: Validate submodules are initialised
-        run: |
-          EXPECTED=11
-          ACTUAL=$(git submodule status | wc -l | tr -d ' ')
-          echo "Found $ACTUAL submodules (expected $EXPECTED)"
-          test "$ACTUAL" -eq "$EXPECTED"
