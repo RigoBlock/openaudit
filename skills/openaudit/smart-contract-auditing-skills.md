@@ -38,7 +38,7 @@ Dated 2026-03-01.
 
 ### 2. pashov/skills
 
-- **GitHub:** https://github.com/pashov/skills
+- **Local:** [deps/pashov-skills](../../deps/pashov-skills)
 - **Stars:** 156 | **Forks:** 24 | **Created:** 2026-02-23
 - **Skills:** 1 (`solidity-auditor`)
 - **Lines:** 1,461
@@ -51,7 +51,7 @@ Dated 2026-03-01.
 
 ### 3. Cyfrin/solskill
 
-- **GitHub:** https://github.com/Cyfrin/solskill
+- **Local:** [deps/cyfrin-solskill](../../deps/cyfrin-solskill)
 - **Stars:** 96 | **Forks:** 16 | **Created:** 2026-02-18
 - **Skills:** 1 (`solskill`)
 - **Lines:** 350
@@ -64,7 +64,7 @@ Dated 2026-03-01.
 
 ### 4. kadenzipfel/scv-scan
 
-- **GitHub:** https://github.com/kadenzipfel/scv-scan
+- **Local:** [deps/kadenzipfel-scv-scan](../../deps/kadenzipfel-scv-scan)
 - **Stars:** 77 | **Forks:** 8 | **Created:** 2026-02-09
 - **Skills:** 1 (`/scv`)
 - **Lines:** 2,784
@@ -77,7 +77,7 @@ Dated 2026-03-01.
 
 ### 5. forefy/.context
 
-- **GitHub:** https://github.com/forefy/.context
+- **Local:** [deps/forefy-context](../../deps/forefy-context)
 - **Stars:** 70 | **Forks:** 13
 - **Skills:** 3 (`smart-contract-audit`, `infrastructure-audit`, `auditor-quiz`)
 - **Lines:** 15,371
@@ -90,7 +90,7 @@ Dated 2026-03-01.
 
 ### 6. quillai-network/qs_skills
 
-- **GitHub:** https://github.com/quillai-network/qs_skills
+- **Local:** [deps/quillai-qs-skills](../../deps/quillai-qs-skills)
 - **Stars:** 62 | **Forks:** not available
 - **Skills:** 10
 - **Lines:** 8,528
@@ -103,7 +103,7 @@ Dated 2026-03-01.
 
 ### 7. Archethect/sc-auditor
 
-- **GitHub:** https://github.com/Archethect/sc-auditor
+- **Local:** [deps/archethect-sc-auditor](../../deps/archethect-sc-auditor)
 - **Stars:** 47 | **Forks:** 9 | **Created:** 2026-02-24
 - **Skills:** 1 skill + 4 MCP tools
 - **Lines:** 1,285
@@ -116,7 +116,7 @@ Dated 2026-03-01.
 
 ### 8. hackenproof-public/skills
 
-- **GitHub:** https://github.com/hackenproof-public/skills
+- **Local:** [deps/hackenproof-skills](../../deps/hackenproof-skills)
 - **Stars:** 7 | **Forks:** 0 | **Created:** 2026-02-18
 - **Skills:** 1 (`hackenproof-triage-marketplace`)
 - **Lines:** 300
@@ -129,7 +129,7 @@ Dated 2026-03-01.
 
 ### 9. auditmos/skills
 
-- **GitHub:** https://github.com/auditmos/skills
+- **Local:** [deps/auditmos-skills](../../deps/auditmos-skills)
 - **Stars:** 0 | **Forks:** 0 | **Created:** 2025-12-30
 - **Skills:** 14
 - **Lines:** 12,981
@@ -140,7 +140,7 @@ Dated 2026-03-01.
 
 ### 10. Frankcastleauditor/safe-solana-builder
 
-- **GitHub:** https://github.com/Frankcastleauditor/safe-solana-builder
+- **Local:** [deps/frankcastle-safe-solana](../../deps/frankcastle-safe-solana)
 - **Stars:** 47 | **Forks:** 5 | **Created:** 2026-03-01
 - **Licence:** MIT
 - **Skills:** 1 (`safe-solana-builder`)
@@ -154,7 +154,7 @@ Dated 2026-03-01.
 
 ### 11. The-Membrane/membrane-core (contract-audit skill)
 
-- **GitHub:** https://github.com/The-Membrane/membrane-core/tree/new-age-cdp/.claude/skills/contract-audit
+- **Local:** [deps/membrane-core](../../deps/membrane-core)
 - **Stars:** 10 (parent repo) | **Forks:** 2 | **Created:** 2022-05-13 (parent repo)
 - **Licence:** GPL-3.0
 - **Skills:** 1 (`contract-audit`)
