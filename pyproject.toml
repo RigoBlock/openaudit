@@ -6,11 +6,18 @@ dependencies = [
   "web3", # On-chain queries during deployment analysis
   "web3-ethereum-defi", # Multi-RPC support and misc DeFi protocol interactions
 ]
+authors = [{name = "Mikko Ohtamaa", email = "mikko@tradingstrategy.ai"}]
 description = "Smart contract audit skill pipeline for Claude Code/OpenAI Codex"
 keywords = ["cosmwasm", "slither", "solana", "solidity", "vyper"]
+license = {text = "MIT"}
 name = "openaudit-skill"
+readme = "README.md"
 requires-python = ">=3.11"
 version = "0.1.0"
+
+[project.urls]
+Homepage = "https://tradingstrategy.ai/"
+Repository = "https://github.com/tradingstrategy-ai/openaudit"
 
 [build-system]
 build-backend = "hatchling.build"
