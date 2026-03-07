@@ -6,6 +6,25 @@ OpenAudit is a Claude Code/OpenAI Codex metaskill that runs smart contract sourc
 
 The skill has been refined to a such a level that any software developer audit do a basic smart audit. You can point the skill to any deployed smart contract on any chain and get a basic audit report of its security qualities.
 
+<!-- TOC -->
+## Table of Contents
+
+- [How it works](#how-it-works)
+- [Supported agent pipelines](#supported-agent-pipelines)
+- [Prerequisites](#prerequisites)
+  - [Clone](#clone)
+  - [macOS (Homebrew)](#macos-homebrew)
+  - [Linux](#linux)
+  - [Windows](#windows)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Configuration](#configuration)
+- [Version history](#version-history)
+- [Support](#support)
+- [Social media](#social-media)
+
+<!-- /TOC -->
+
 [Read the announcement post](https://x.com/moo9000/status/2029511848525971928).
 
 ## How it works
@@ -47,7 +66,7 @@ packages to read the chain data over RPCs.
 
 ### Clone
 
-Clone the repository recursively to get the skills:
+Clone the repository recursively to get the skills - currently packaged installation like PyPi is unsupported:
 
 ```shell
 git clone --recursive --depth 1 https://github.com/tradingstrategy-ai/openaudit.git
@@ -91,7 +110,7 @@ Then edit `env.sh` include necessary blockchain RPC endpoints, Etherscan API key
 TODO
 ```
 
-### Winwdows
+### Windows
 
 Unsupported.
 
@@ -105,9 +124,11 @@ Use the skill by pointing it to a smart contract on a blockchain explorer:
 /openaudit https://etherscan.io/address/0x657d9ABA1DBb59e53f9F3eCAA878447dCfC96dCb
 ```
 
+Your AI will start to work on this:
+
 ![Agents working](docs/working.png)
 
-When it is finished you get the summary and reports:
+When it is finished you get the summary and reports in writes them in [out](./out/) folder:
 
 ![alt text](docs/summary-findings.png)
 

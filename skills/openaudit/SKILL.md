@@ -128,6 +128,17 @@ If the skill needs to run software, the following commands can be used:
 
 ### Step 7: Summarise findings
 
+Generate an _Preface_ table:
+
+- Contract address and link
+- Update proxy address and link (if applicable)
+- Contract name
+- Project name
+- Chain name
+- Audit date
+- Current TVL
+- Audted by OpenAudit - this is an AI generated audit - link to the repo
+
 Generate a summary report for all tools.
 
 Creete a section and a table called _Issues found_ for both deployment issues and audit pipelines:
