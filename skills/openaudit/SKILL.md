@@ -125,6 +125,7 @@ If the skill needs to run software, the following commands can be used:
 - Read [how-to-find-existing-audit-reports.md](./how-to-find-existing-audit-reports.md) for tips on how to find existing audit reports for the same project and smart contract.
 - Save the reports, full files and web pages, in `out/{protocol_slug}/prior-audits/`
 - Run parallel agents to search and read through
+- We will use these to flag the issues that are false positives
 
 ### Step 7: Summarise findings
 
@@ -137,15 +138,15 @@ Generate an _Preface_ table:
 - Chain name
 - Audit date
 - Current TVL
-- Audted by OpenAudit - this is an AI generated audit - link to the repo
+- Audited by OpenAudit - this is an AI generated audit - link to the repo
 
 Generate a summary report for all tools.
 
 Creete a section and a table called _Issues found_ for both deployment issues and audit pipelines:
 
 - Deduplicate findings across tools
-- Write a table output with columns like skill repo used, severity, short name, description, source file, relevant addresses, how team addresses the issue - add more columns if needed
-- Sort order: deployment issues first, then critical, high, medium
+- Write a table output with columns like skill repo used, severity, short name, description, source file, relevant addresses, is false positive,how team addresses the issue - add more columns if needed
+- Sort order: deployment issues first, then critical, high, medium. Then issues that have been marked as false positives as the last.
 - Include deployment and address specific issues in the table as the most important ones
 - If we have existing audit reports and the issues were already addressed, add a column to "author reply" with a reference to the existing report where the issue was discussed and addressed.
 - If the finding is INFO or LOW level, ignore them - let's not make the output too noisy
