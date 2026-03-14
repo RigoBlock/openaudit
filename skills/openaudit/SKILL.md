@@ -163,14 +163,51 @@ This includes inherited contracts, imported libraries, and extension contracts c
 delegatecall/staticcall from fallback functions. If the target uses a proxy pattern,
 download and analyze the implementation contract's full source tree.
 
-### Step 6: Search for existing audit reports
+### Step 6: Generate attack reproductions
+
+For each **Medium or higher** finding from Step 5, produce a self-contained Foundry test that
+demonstrates whether the vulnerability is exploitable. This turns theoretical findings into
+concrete evidence a reviewer can run in seconds.
+
+For each finding:
+
+1. **Write a Foundry test file** at `out/{protocol_slug}/tests/{FindingSlug}.t.sol`
+   - Import the target contracts and any required interfaces
+   - Set up a realistic scenario in `setUp()` (deploy or fork mainnet state)
+   - Write a single `test_` function that executes the attack steps
+   - Use `assertEq` / `assertGt` to prove the exploit outcome (e.g. attacker balance increased)
+   - Add a NatSpec `@notice` block at the top with:
+     - **Proof statement**: one sentence of what the test proves
+     - **Attack steps**: numbered list of the exploit sequence
+     - **Expected outcome**: what success looks like
+
+2. **Add a run command block** in the finding's report section:
+   ```shell
+   cd out/{protocol_slug}/src && forge test \
+     --match-path ../tests/{FindingSlug}.t.sol -vvv
+   ```
+
+3. **Interpret the result**:
+   - If the test **passes** → the finding is confirmed exploitable. Include the passing output
+     snippet in the report and keep the finding severity as-is.
+   - If the test **reverts** → the finding may be a false positive or require additional
+     preconditions. Note the revert reason in the report and consider downgrading severity.
+   - If the test cannot be written (e.g. requires off-chain coordination, MEV timing, or
+     cross-transaction setup), explain why and mark the finding as "PoC not feasible —
+     requires {reason}".
+
+Keep the tests minimal — just enough code to trigger the bug and assert the impact.
+Avoid duplicating the protocol's full test suite. Each test should be independently
+runnable with `forge test --match-path`.
+
+### Step 7: Search for existing audit reports
 
 - Read [how-to-find-existing-audit-reports.md](./how-to-find-existing-audit-reports.md) for tips on how to find existing audit reports for the same project and smart contract.
 - Save the reports, full files and web pages, in `out/{protocol_slug}/prior-audits/`
 - Run parallel agents to search and read through
 - We will use these to flag the issues that are false positives
 
-### Step 7: Summarise findings
+### Step 8: Summarise findings
 
 Generate an _Preface_ table:
 
@@ -191,6 +228,7 @@ Creete a section and a table called _Issues found_ for both deployment issues an
 - Write a table output with columns like skill repo used, severity, short name, description, source file, relevant addresses, is false positive,how team addresses the issue - add more columns if needed
 - Sort order: deployment issues first, then critical, high, medium. Then issues that have been marked as false positives as the last.
 - Include deployment and address specific issues in the table as the most important ones
+- For Medium+ findings, include the PoC test result: "Confirmed" (test passed), "Unconfirmed" (test reverted), or "No PoC" (not feasible). Link to the test file.
 - If we have existing audit reports and the issues were already addressed, add a column to "author reply" with a reference to the existing report where the issue was discussed and addressed.
 - If the finding is INFO or LOW level, ignore them - let's not make the output too noisy
 - If the finding is documented, do not add it to the summary
@@ -215,7 +253,7 @@ For skipped auditing pipelines, create another output table _Skipped pipelines_ 
 
 Write the summary as `out/{protocol_slug}/reports/openaudit-{protocol_slug}.md`
 
-## Step 8: Say thank you
+## Step 9: Say thank you
 
 Ask the user to tweet out happiness of finding and using this tool.
 
