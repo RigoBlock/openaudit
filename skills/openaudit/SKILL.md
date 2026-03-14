@@ -77,15 +77,18 @@ Before performing this step, use ask user tool to confirm which pipelines we are
 full source tree, not the proxy's minimal code.
 
 **If the contract delegates to extension contracts** (via fallback, delegatecall, or an extensions
-map), identify all extension addresses on-chain and download their source code too:
+registry), identify all extension addresses on-chain and download their source code too:
 
-1. Read the constructor arguments or immutable variables to find the ExtensionsMap / router address
-2. Call each getter on the ExtensionsMap to enumerate extension contract addresses
+1. Read the constructor arguments, immutable variables, or storage slots to find the
+   extension registry / router / module map address
+2. Enumerate all registered extension addresses — call getter functions, read mappings,
+   or parse emitted events that register modules
 3. Download each extension's verified source from Sourcify (preferred) or Etherscan
 4. Save extension sources to `out/{protocol_slug}/src-extensions/{extension_name}/`
-5. The Authority contract may provide additional "adapter" contracts — enumerate those too
+5. Check for governance or access-control contracts that whitelist additional external
+   contracts (adapters, strategies, hooks, etc.) and enumerate those too
 
-**All downloaded contracts** (main implementation + extensions + adapters + authority) are in scope
+**All downloaded contracts** (main implementation + extensions + adapters + governance) are in scope
 for the audit pipelines. Libraries imported by any of these contracts are also in scope.
 
 Read [how-to-get-source-code.md](./how-to-get-source-code.md) for more details on how to get the source code files from different blockchains and explorers.

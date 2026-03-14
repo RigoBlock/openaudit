@@ -183,7 +183,7 @@ The audit MUST cover:
 1. **All libraries** imported by the contract (SafeTransferLib, EnumerableSet, etc.)
 2. **All inherited contracts** in the mixin/diamond hierarchy
 3. **Extension contracts** that are called via delegatecall or staticcall from fallback functions
-4. **External contracts** at addresses stored in state (Authority, ExtensionsMap, Oracle adapters)
+4. **External contracts** at addresses stored in state (governance, extension registries, routers, hooks, etc.)
 
 For libraries and inherited contracts, include them in the source code scope for all pipelines.
 For extension/external contracts, download their source code separately (using Sourcify/Etherscan)
