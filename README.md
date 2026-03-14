@@ -122,8 +122,62 @@ The skill pipelines won't work without RPC API keys for the chains we are going 
 
 ### Linux
 
+Tested on Arch Linux. Adapt the package manager commands for your distribution (e.g. `apt` on Debian/Ubuntu, `dnf` on Fedora).
+
+#### Arch Linux
+
+```bash
+# Python 3.11+, Node 22+, and base dependencies
+sudo pacman -S --needed python nodejs npm git base-devel
+
+# uv (Python package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env  # or restart your shell
+
+# Rust toolchain (optional — needed for Aderyn static analyser)
+sudo pacman -S --needed rustup
+rustup default stable
+
+# Foundry (forge — downloads verified contract source code)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+# Aderyn (optional — Solidity static analyser by Cyfrin)
+cargo install aderyn
+
+# Install Python packages (Slither, semgrep, web3, etc.)
+uv sync
+
+# Install a Solidity compiler Slither can use
+SOLIDITY_VERSION=0.8.34 && uv run solc-select install $SOLIDITY_VERSION && uv run solc-select use $SOLIDITY_VERSION
 ```
-TODO
+
+#### Debian / Ubuntu
+
+```bash
+# Python 3.11+, Node 22+, and base dependencies
+sudo apt update && sudo apt install -y python3 python3-venv nodejs npm git build-essential curl
+
+# uv (Python package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env
+
+# Rust toolchain (optional — needed for Aderyn static analyser)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
+# Foundry (forge — downloads verified contract source code)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+# Aderyn (optional)
+cargo install aderyn
+
+# Install Python packages
+uv sync
+
+# Install a Solidity compiler Slither can use
+SOLIDITY_VERSION=0.8.34 && uv run solc-select install $SOLIDITY_VERSION && uv run solc-select use $SOLIDITY_VERSION
 ```
 
 ### Windows
