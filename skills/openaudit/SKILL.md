@@ -105,20 +105,45 @@ Use [Web3.py](https://web3py.readthedocs.io/) for reading onchain data.
 
 ### Step 5: Run each skill-based auditing pipeline
 
-The skill repos are in `deps/`. For each tool:
+The skill repos are in `deps/`. There are two categories of pipelines:
 
-- Read its README at `deps/{skill_repo_name}/`
-- Follow the README to set up and run the tool
-- If you need to install additional software stop and ask the user for help and confirmation
+**Category A — Static analysis tools** (Slither, Aderyn, Semgrep): These run external binaries
+on the source code and produce machine-readable output. Run them with:
 
-For each tool write a Markdown report as `out/{protocol_slug}/reports/{skill_repo_name}.md`
+- `uv run slither {src_dir} --json {output_dir}/slither-output.json`
+- `aderyn {src_dir} --output {output_dir}/aderyn-report.md`
+- `uv run semgrep --metrics=off --config "r/solidity" --json {src_dir}/ > {output_dir}/semgrep-results.json`
 
-Run 4 parallel agents, and as many sequential batches as needed with these agents until we have run every skill repo.
+**Important**: The source directory must be a git repository for Semgrep to scan files.
+Run `git init && git add -A && git commit -m init` in the source dir if needed.
+Always use `--metrics=off` with Semgrep to prevent telemetry.
 
-If the skill needs to run software, the following commands can be used:
+**Category B — AI-driven methodology skills** (pashov, kadenzipfel, forefy, quillai,
+auditmos, trailofbits, archethect, cyfrin): These are structured markdown prompts.
+For each one, you the AI agent must:
 
-- `uv run slither` - For Slither
-- `aderyn` - For Aderyn
+1. Read the skill's SKILL.md (or README.md) in `deps/{skill_repo_name}/`
+2. Read any referenced vulnerability databases, checklists, or attack vector files
+3. Systematically analyze the downloaded source code against those patterns
+4. Write findings to `out/{protocol_slug}/reports/{skill_repo_name}.md`
+
+These skills require NO external tools — you perform the analysis using your own reasoning
+over the code, guided by the methodology in each skill file.
+
+**See [audit-pipeline-reference.md](./audit-pipeline-reference.md) for the complete list of
+10 pipelines with exact file paths, invocation steps, and what each one finds.**
+
+Run 4 parallel agents, and as many sequential batches as needed with these agents
+until we have run every applicable skill repo. For Solidity audits, skip
+`frankcastle-safe-solana` (Solana only), `membrane-core` (CosmWasm only),
+and `hackenproof-skills` (triage workflow, not an audit methodology).
+
+If a skill needs you to install additional software, stop and ask the user for help and confirmation.
+
+**Scope**: All pipelines must analyze the FULL source tree — not just the main contract file.
+This includes inherited contracts, imported libraries, and extension contracts called via
+delegatecall/staticcall from fallback functions. If the target uses a proxy pattern,
+download and analyze the implementation contract's full source tree.
 
 ### Step 6: Search for existing audit reports
 
