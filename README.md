@@ -122,8 +122,62 @@ The skill pipelines won't work without RPC API keys for the chains we are going 
 
 ### Linux
 
+Tested on Arch Linux. Adapt the package manager commands for your distribution (e.g. `apt` on Debian/Ubuntu, `dnf` on Fedora).
+
+#### Arch Linux
+
+```bash
+# Python 3.11+, Node 22+, and base dependencies
+sudo pacman -S --needed python nodejs npm git base-devel
+
+# uv (Python package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env  # or restart your shell
+
+# Rust toolchain (optional — needed for Aderyn static analyser)
+sudo pacman -S --needed rustup
+rustup default stable
+
+# Foundry (forge — downloads verified contract source code)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+# Aderyn (optional — Solidity static analyser by Cyfrin)
+cargo install aderyn
+
+# Install Python packages (Slither, semgrep, web3, etc.)
+uv sync
+
+# Install a Solidity compiler Slither can use
+SOLIDITY_VERSION=0.8.34 && uv run solc-select install $SOLIDITY_VERSION && uv run solc-select use $SOLIDITY_VERSION
 ```
-TODO
+
+#### Debian / Ubuntu
+
+```bash
+# Python 3.11+, Node 22+, and base dependencies
+sudo apt update && sudo apt install -y python3 python3-venv nodejs npm git build-essential curl
+
+# uv (Python package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env
+
+# Rust toolchain (optional — needed for Aderyn static analyser)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
+# Foundry (forge — downloads verified contract source code)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+# Aderyn (optional)
+cargo install aderyn
+
+# Install Python packages
+uv sync
+
+# Install a Solidity compiler Slither can use
+SOLIDITY_VERSION=0.8.34 && uv run solc-select install $SOLIDITY_VERSION && uv run solc-select use $SOLIDITY_VERSION
 ```
 
 ### Windows
@@ -147,6 +201,27 @@ Your AI will start to work on this:
 When it is finished you get the summary and reports in writes them in [out](./out/) folder:
 
 ![alt text](docs/summary-findings.png)
+
+## Understanding the audit pipelines
+
+OpenAudit runs two categories of pipelines against the source code:
+
+**Static analysis tools** (Slither, Aderyn, Semgrep) — external binaries that scan the source code
+and produce machine-readable output. These catch common vulnerability patterns, unsafe coding
+practices, and compiler-level issues automatically.
+
+**AI-driven methodology skills** (pashov, kadenzipfel, forefy, quillai, auditmos, trailofbits,
+archethect, cyfrin) — structured markdown prompts that the AI agent reads and follows step by
+step. Each skill contains vulnerability databases, attack vector references, or protocol-specific
+checklists. The AI agent analyzes the source code against these patterns using its own reasoning.
+No external tools are needed for these — they leverage the AI's ability to understand code semantics.
+
+Running all pipelines provides defense-in-depth: static tools catch syntactic patterns that AI may
+overlook, while AI-driven skills catch business logic bugs, economic exploits, and cross-contract
+issues that static analysis cannot reason about.
+
+For the full list of 10 pipelines with exact invocation instructions, see
+[skills/openaudit/audit-pipeline-reference.md](./skills/openaudit/audit-pipeline-reference.md).
 
 ## Examples
 

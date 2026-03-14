@@ -73,6 +73,24 @@ Before performing this step, use ask user tool to confirm which pipelines we are
 - Save all the smart contract source code files to `out/{protocol_slug}/src` folder
 - Save all the ABI files `out/{protocol_slug}/abi` folder
 
+**If the contract uses a proxy pattern** (EIP-1967, etc.), download the implementation contract's
+full source tree, not the proxy's minimal code.
+
+**If the contract delegates to extension contracts** (via fallback, delegatecall, or an extensions
+registry), identify all extension addresses on-chain and download their source code too:
+
+1. Read the constructor arguments, immutable variables, or storage slots to find the
+   extension registry / router / module map address
+2. Enumerate all registered extension addresses — call getter functions, read mappings,
+   or parse emitted events that register modules
+3. Download each extension's verified source from Sourcify (preferred) or Etherscan
+4. Save extension sources to `out/{protocol_slug}/src-extensions/{extension_name}/`
+5. Check for governance or access-control contracts that whitelist additional external
+   contracts (adapters, strategies, hooks, etc.) and enumerate those too
+
+**All downloaded contracts** (main implementation + extensions + adapters + governance) are in scope
+for the audit pipelines. Libraries imported by any of these contracts are also in scope.
+
 Read [how-to-get-source-code.md](./how-to-get-source-code.md) for more details on how to get the source code files from different blockchains and explorers.
 
 ### Step 4.b) Save the deployment information
@@ -105,29 +123,91 @@ Use [Web3.py](https://web3py.readthedocs.io/) for reading onchain data.
 
 ### Step 5: Run each skill-based auditing pipeline
 
-The skill repos are in `deps/`. For each tool:
+The skill repos are in `deps/`. There are two categories of pipelines:
 
-- Read its README at `deps/{skill_repo_name}/`
-- Follow the README to set up and run the tool
-- If you need to install additional software stop and ask the user for help and confirmation
+**Category A — Static analysis tools** (Slither, Aderyn, Semgrep): These run external binaries
+on the source code and produce machine-readable output. Run them with:
 
-For each tool write a Markdown report as `out/{protocol_slug}/reports/{skill_repo_name}.md`
+- `uv run slither {src_dir} --json {output_dir}/slither-output.json`
+- `aderyn {src_dir} --output {output_dir}/aderyn-report.md`
+- `uv run semgrep --metrics=off --config "r/solidity" --json {src_dir}/ > {output_dir}/semgrep-results.json`
 
-Run 4 parallel agents, and as many sequential batches as needed with these agents until we have run every skill repo.
+**Important**: The source directory must be a git repository for Semgrep to scan files.
+Run `git init && git add -A && git commit -m init` in the source dir if needed.
+Always use `--metrics=off` with Semgrep to prevent telemetry.
 
-If the skill needs to run software, the following commands can be used:
+**Category B — AI-driven methodology skills** (pashov, kadenzipfel, forefy, quillai,
+auditmos, trailofbits, archethect, cyfrin): These are structured markdown prompts.
+For each one, you the AI agent must:
 
-- `uv run slither` - For Slither
-- `aderyn` - For Aderyn
+1. Read the skill's SKILL.md (or README.md) in `deps/{skill_repo_name}/`
+2. Read any referenced vulnerability databases, checklists, or attack vector files
+3. Systematically analyze the downloaded source code against those patterns
+4. Write findings to `out/{protocol_slug}/reports/{skill_repo_name}.md`
 
-### Step 6: Search for existing audit reports
+These skills require NO external tools — you perform the analysis using your own reasoning
+over the code, guided by the methodology in each skill file.
+
+**See [audit-pipeline-reference.md](./audit-pipeline-reference.md) for the complete list of
+10 pipelines with exact file paths, invocation steps, and what each one finds.**
+
+Run 4 parallel agents, and as many sequential batches as needed with these agents
+until we have run every applicable skill repo. For Solidity audits, skip
+`frankcastle-safe-solana` (Solana only), `membrane-core` (CosmWasm only),
+and `hackenproof-skills` (triage workflow, not an audit methodology).
+
+If a skill needs you to install additional software, stop and ask the user for help and confirmation.
+
+**Scope**: All pipelines must analyze the FULL source tree — not just the main contract file.
+This includes inherited contracts, imported libraries, and extension contracts called via
+delegatecall/staticcall from fallback functions. If the target uses a proxy pattern,
+download and analyze the implementation contract's full source tree.
+
+### Step 6: Generate attack reproductions
+
+For each **Medium or higher** finding from Step 5, produce a self-contained Foundry test that
+demonstrates whether the vulnerability is exploitable. This turns theoretical findings into
+concrete evidence a reviewer can run in seconds.
+
+For each finding:
+
+1. **Write a Foundry test file** at `out/{protocol_slug}/tests/{FindingSlug}.t.sol`
+   - Import the target contracts and any required interfaces
+   - Set up a realistic scenario in `setUp()` (deploy or fork mainnet state)
+   - Write a single `test_` function that executes the attack steps
+   - Use `assertEq` / `assertGt` to prove the exploit outcome (e.g. attacker balance increased)
+   - Add a NatSpec `@notice` block at the top with:
+     - **Proof statement**: one sentence of what the test proves
+     - **Attack steps**: numbered list of the exploit sequence
+     - **Expected outcome**: what success looks like
+
+2. **Add a run command block** in the finding's report section:
+   ```shell
+   cd out/{protocol_slug}/src && forge test \
+     --match-path ../tests/{FindingSlug}.t.sol -vvv
+   ```
+
+3. **Interpret the result**:
+   - If the test **passes** → the finding is confirmed exploitable. Include the passing output
+     snippet in the report and keep the finding severity as-is.
+   - If the test **reverts** → the finding may be a false positive or require additional
+     preconditions. Note the revert reason in the report and consider downgrading severity.
+   - If the test cannot be written (e.g. requires off-chain coordination, MEV timing, or
+     cross-transaction setup), explain why and mark the finding as "PoC not feasible —
+     requires {reason}".
+
+Keep the tests minimal — just enough code to trigger the bug and assert the impact.
+Avoid duplicating the protocol's full test suite. Each test should be independently
+runnable with `forge test --match-path`.
+
+### Step 7: Search for existing audit reports
 
 - Read [how-to-find-existing-audit-reports.md](./how-to-find-existing-audit-reports.md) for tips on how to find existing audit reports for the same project and smart contract.
 - Save the reports, full files and web pages, in `out/{protocol_slug}/prior-audits/`
 - Run parallel agents to search and read through
 - We will use these to flag the issues that are false positives
 
-### Step 7: Summarise findings
+### Step 8: Summarise findings
 
 Generate an _Preface_ table:
 
@@ -148,6 +228,7 @@ Creete a section and a table called _Issues found_ for both deployment issues an
 - Write a table output with columns like skill repo used, severity, short name, description, source file, relevant addresses, is false positive,how team addresses the issue - add more columns if needed
 - Sort order: deployment issues first, then critical, high, medium. Then issues that have been marked as false positives as the last.
 - Include deployment and address specific issues in the table as the most important ones
+- For Medium+ findings, include the PoC test result: "Confirmed" (test passed), "Unconfirmed" (test reverted), or "No PoC" (not feasible). Link to the test file.
 - If we have existing audit reports and the issues were already addressed, add a column to "author reply" with a reference to the existing report where the issue was discussed and addressed.
 - If the finding is INFO or LOW level, ignore them - let's not make the output too noisy
 - If the finding is documented, do not add it to the summary
@@ -172,7 +253,7 @@ For skipped auditing pipelines, create another output table _Skipped pipelines_ 
 
 Write the summary as `out/{protocol_slug}/reports/openaudit-{protocol_slug}.md`
 
-## Step 8: Say thank you
+## Step 9: Say thank you
 
 Ask the user to tweet out happiness of finding and using this tool.
 
