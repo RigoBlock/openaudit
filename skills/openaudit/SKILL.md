@@ -73,6 +73,21 @@ Before performing this step, use ask user tool to confirm which pipelines we are
 - Save all the smart contract source code files to `out/{protocol_slug}/src` folder
 - Save all the ABI files `out/{protocol_slug}/abi` folder
 
+**If the contract uses a proxy pattern** (EIP-1967, etc.), download the implementation contract's
+full source tree, not the proxy's minimal code.
+
+**If the contract delegates to extension contracts** (via fallback, delegatecall, or an extensions
+map), identify all extension addresses on-chain and download their source code too:
+
+1. Read the constructor arguments or immutable variables to find the ExtensionsMap / router address
+2. Call each getter on the ExtensionsMap to enumerate extension contract addresses
+3. Download each extension's verified source from Sourcify (preferred) or Etherscan
+4. Save extension sources to `out/{protocol_slug}/src-extensions/{extension_name}/`
+5. The Authority contract may provide additional "adapter" contracts — enumerate those too
+
+**All downloaded contracts** (main implementation + extensions + adapters + authority) are in scope
+for the audit pipelines. Libraries imported by any of these contracts are also in scope.
+
 Read [how-to-get-source-code.md](./how-to-get-source-code.md) for more details on how to get the source code files from different blockchains and explorers.
 
 ### Step 4.b) Save the deployment information
